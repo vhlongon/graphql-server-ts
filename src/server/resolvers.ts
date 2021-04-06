@@ -4,6 +4,7 @@ import {
   QueryFilmArgs,
   QueryFilmsArgs,
   Resolvers,
+  SortBy,
 } from '../graphql/types/graphql-types';
 
 const SWAPI = 'https://star-wars-api.herokuapp.com/films';
@@ -33,15 +34,25 @@ const transformFilm = ({
   openingCrawl: opening_crawl,
 });
 
+const orderByReleaseDate = (data: Response[]): Response[] =>
+  data.sort(
+    (a, b) =>
+      new Date(a.fields.release_date).getTime() -
+      new Date(b.fields.release_date).getTime()
+  );
+
+const orderByEpisode = (data: Response[]): Response[] =>
+  data.sort((a, b) => a.fields.episode_id - b.fields.episode_id);
+
 export const resolvers: Resolvers = {
   Query: {
     films: async (_, { sortBy }: QueryFilmsArgs = {}) => {
       const response = await fetch(SWAPI);
       const data = await response.json();
-      const r = data.map(({ fields }: Response) => transformFilm(fields));
+      const sorted =
+        sortBy === SortBy.ReleaseDate ? orderByReleaseDate(data) : orderByEpisode(data);
 
-      // TODO sorty by correctly
-      return r;
+      return sorted.map(({ fields }: Response) => transformFilm(fields));
     },
     film: async (_, args: QueryFilmArgs) => {
       const response = await fetch(SWAPI);
