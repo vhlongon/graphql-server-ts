@@ -1,0 +1,37 @@
+{
+  "name": "graphql-server",
+  "version": "1.0.0",
+  "description": "node graphql server with code gen",
+  "main": "index.js",
+  "scripts": {
+    "prestart": "yarn generate-types",
+    "generate-types": "graphql-codegen --config codegen.yml",
+    "server:watch": "ts-node-dev src/server/server.ts",
+    "dev": "concurrently \"nodemon src/server/server.ts\" \"yarn generate-types --watch\""
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@apollo/client": "^3.3.14",
+    "apollo-server-express": "^2.22.2",
+    "express": "^4.17.1",
+    "graphql": "^15.5.0",
+    "node-fetch": "^2.6.1",
+    "typescript": "^4.2.3"
+  },
+  "devDependencies": {
+    "@graphql-codegen/cli": "^1.21.3",
+    "@graphql-codegen/import-types-preset": "^1.18.1",
+    "@graphql-codegen/introspection": "1.18.1",
+    "@graphql-codegen/typescript": "^1.21.1",
+    "@graphql-codegen/typescript-graphql-files-modules": "1.18.1",
+    "@graphql-codegen/typescript-operations": "^1.17.15",
+    "@graphql-codegen/typescript-react-apollo": "^2.2.3",
+    "@graphql-codegen/typescript-resolvers": "1.19.0",
+    "concurrently": "^6.0.1",
+    "nodemon": "^2.0.7",
+    "prettier": "^2.2.1",
+    "ts-node": "^9.1.1",
+    "ts-node-dev": "^1.1.6"
+  }
+}
