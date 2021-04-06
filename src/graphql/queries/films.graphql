@@ -1,0 +1,9 @@
+query GetFilms {
+  films {
+    id
+    producer
+    title
+    releaseDate
+    openingCrawl
+  }
+}

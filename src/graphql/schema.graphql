@@ -1,0 +1,17 @@
+type Film {
+  producer: String!
+  title: String!
+  id: Int!
+  releaseDate: String!
+  openingCrawl: String!
+}
+
+enum SortBy {
+  RELEASE_DATE
+  ID
+}
+
+type Query {
+  films(sortBy: SortBy = ID): [Film]
+  film(id: Int!): Film
+}
