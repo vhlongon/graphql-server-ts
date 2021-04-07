@@ -1,12 +1,12 @@
 overwrite: true
-schema: 'src/graphql/schema.graphql'
+schema: 'src/graphql/schema.gql'
 hooks:
   afterAllFileWrite:
     - prettier --write
 generates:
   # Get schemas from server
   src/graphql/types/graphql-types.ts:
-    documents: 'src/graphql/**/**.graphql'
+    documents: 'src/graphql/**/**.gql'
     plugins:
       - typescript
       - typescript-resolvers

@@ -32,7 +32,7 @@ export type Film = {
 };
 
 export type Query = {
-  films?: Maybe<Array<Maybe<Film>>>;
+  films?: Maybe<Array<Film>>;
   film?: Maybe<Film>;
 };
 
@@ -199,7 +199,7 @@ export type QueryResolvers<
   ParentType extends ResolversParentTypes["Query"] = ResolversParentTypes["Query"]
 > = {
   films?: Resolver<
-    Maybe<Array<Maybe<ResolversTypes["Film"]>>>,
+    Maybe<Array<ResolversTypes["Film"]>>,
     ParentType,
     ContextType,
     RequireFields<QueryFilmsArgs, "sortBy">
@@ -228,9 +228,7 @@ export type GetFilmsQueryVariables = Exact<{ [key: string]: never }>;
 export type GetFilmsQuery = {
   films?: Maybe<
     Array<
-      Maybe<
-        Pick<Film, "id" | "producer" | "title" | "releaseDate" | "openingCrawl">
-      >
+      Pick<Film, "id" | "producer" | "title" | "releaseDate" | "openingCrawl">
     >
   >;
 };

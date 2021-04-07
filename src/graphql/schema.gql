@@ -12,6 +12,6 @@ enum SortBy {
 }
 
 type Query {
-  films(sortBy: SortBy = ID): [Film]
+  films(sortBy: SortBy = ID): [Film!]
   film(id: Int!): Film
 }
