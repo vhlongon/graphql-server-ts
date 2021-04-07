@@ -24,7 +24,6 @@ export type Scalars = {
 };
 
 export type Film = {
-  __typename?: "Film";
   producer: Scalars["String"];
   title: Scalars["String"];
   id: Scalars["Int"];
@@ -33,7 +32,6 @@ export type Film = {
 };
 
 export type Query = {
-  __typename?: "Query";
   films?: Maybe<Array<Maybe<Film>>>;
   film?: Maybe<Film>;
 };
@@ -227,14 +225,11 @@ export type IResolvers<ContextType = any> = Resolvers<ContextType>;
 
 export type GetFilmsQueryVariables = Exact<{ [key: string]: never }>;
 
-export type GetFilmsQuery = { __typename?: "Query" } & {
+export type GetFilmsQuery = {
   films?: Maybe<
     Array<
       Maybe<
-        { __typename?: "Film" } & Pick<
-          Film,
-          "id" | "producer" | "title" | "releaseDate" | "openingCrawl"
-        >
+        Pick<Film, "id" | "producer" | "title" | "releaseDate" | "openingCrawl">
       >
     >
   >;

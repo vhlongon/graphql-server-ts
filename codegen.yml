@@ -12,3 +12,6 @@ generates:
       - typescript-resolvers
       - typescript-operations
       - typescript-react-apollo
+    config:
+      skipTypeNameForRoot: true
+      skipTypename: true

@@ -26,7 +26,7 @@ const transformFilm = ({
   opening_crawl,
   episode_id,
   title,
-}: FilmMainData): Omit<Film, '__typename'> => ({
+}: FilmMainData): Film => ({
   producer,
   title,
   id: episode_id,
@@ -50,7 +50,9 @@ export const resolvers: Resolvers = {
       const response = await fetch(SWAPI);
       const data = await response.json();
       const sorted =
-        sortBy === SortBy.ReleaseDate ? orderByReleaseDate(data) : orderByEpisode(data);
+        sortBy === SortBy.ReleaseDate
+          ? orderByReleaseDate(data)
+          : orderByEpisode(data);
 
       return sorted.map(({ fields }: Response) => transformFilm(fields));
     },
