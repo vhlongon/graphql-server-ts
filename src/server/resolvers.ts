@@ -15,6 +15,7 @@ type FilmMainData = {
   opening_crawl: string;
   episode_id: number;
   title: string;
+  director: string;
 };
 
 type Response = {
@@ -26,12 +27,14 @@ const transformFilm = ({
   opening_crawl,
   episode_id,
   title,
+  director,
 }: FilmMainData): Film => ({
   producer,
   title,
   id: episode_id,
   releaseDate: release_date,
   openingCrawl: opening_crawl,
+  director,
 });
 
 const orderByReleaseDate = (data: Response[]): Response[] =>

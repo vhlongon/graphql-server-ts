@@ -4,6 +4,7 @@ type Film {
   id: Int!
   releaseDate: String!
   openingCrawl: String!
+  director: String!
 }
 
 enum SortBy {

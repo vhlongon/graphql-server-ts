@@ -1,5 +1,5 @@
-query GetFilms {
-  films {
+query GetFilms($sortBy: SortBy) {
+  films(sortBy: $sortBy) {
     id
     producer
     title

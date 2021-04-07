@@ -29,6 +29,7 @@ export type Film = {
   id: Scalars["Int"];
   releaseDate: Scalars["String"];
   openingCrawl: Scalars["String"];
+  director: Scalars["String"];
 };
 
 export type Query = {
@@ -191,6 +192,7 @@ export type FilmResolvers<
   id?: Resolver<ResolversTypes["Int"], ParentType, ContextType>;
   releaseDate?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   openingCrawl?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  director?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -223,7 +225,9 @@ export type Resolvers<ContextType = any> = {
  */
 export type IResolvers<ContextType = any> = Resolvers<ContextType>;
 
-export type GetFilmsQueryVariables = Exact<{ [key: string]: never }>;
+export type GetFilmsQueryVariables = Exact<{
+  sortBy?: Maybe<SortBy>;
+}>;
 
 export type GetFilmsQuery = {
   films?: Maybe<
@@ -234,8 +238,8 @@ export type GetFilmsQuery = {
 };
 
 export const GetFilmsDocument = gql`
-  query GetFilms {
-    films {
+  query GetFilms($sortBy: SortBy) {
+    films(sortBy: $sortBy) {
       id
       producer
       title
@@ -257,6 +261,7 @@ export const GetFilmsDocument = gql`
  * @example
  * const { data, loading, error } = useGetFilmsQuery({
  *   variables: {
+ *      sortBy: // value for 'sortBy'
  *   },
  * });
  */
