@@ -4,7 +4,11 @@ hooks:
   afterAllFileWrite:
     - prettier --write
 generates:
-  # Get schemas from server
+  graphql.schema.json:
+    plugins:
+      - introspection
+    config:
+      minify: true
   src/graphql/types/graphql-types.ts:
     documents: 'src/graphql/**/**.gql'
     plugins:
