@@ -18,9 +18,9 @@ const FilmsList = () => {
     <div>
       <h1>SW Movies</h1>
       <ul>
-        {data?.films?.map(({ id, releaseDate, title }) => (
+        {data?.films?.map(({ id, releaseDate, title, director }) => (
           <li key={id}>
-            Episode: {id} || {title} || {releaseDate}
+            Episode: {id} || {title} || {releaseDate} || {director}
           </li>
         ))}
       </ul>

@@ -232,7 +232,15 @@ export type GetFilmsQueryVariables = Exact<{
 export type GetFilmsQuery = {
   films?: Maybe<
     Array<
-      Pick<Film, "id" | "producer" | "title" | "releaseDate" | "openingCrawl">
+      Pick<
+        Film,
+        | "id"
+        | "producer"
+        | "title"
+        | "releaseDate"
+        | "openingCrawl"
+        | "director"
+      >
     >
   >;
 };
@@ -245,6 +253,7 @@ export const GetFilmsDocument = gql`
       title
       releaseDate
       openingCrawl
+      director
     }
   }
 `;
