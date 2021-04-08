@@ -12,7 +12,7 @@ server.applyMiddleware({ app });
 
 const PORT = 4000;
 
-app.listen({ port: PORT }, () =>
+app.listen({ port: process.env.PORT || PORT }, () =>
   console.log(
     chalk.magenta.bold(
       `🚀 Server ready at http://localhost:${PORT}${server.graphqlPath}`
