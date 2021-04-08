@@ -2,7 +2,10 @@
   "name": "graphql-server",
   "version": "1.0.0",
   "description": "node graphql server with code gen",
-  "main": "index.js",
+  "main": "src/server/server.ts",
+  "engines": {
+    "node": "14.x"
+  },
   "scripts": {
     "prestart": "yarn generate-types",
     "generate-types": "graphql-codegen --config codegen.yml",
