@@ -8,6 +8,7 @@
     "generate-types": "graphql-codegen --config codegen.yml",
     "server:watch": "ts-node-dev src/server/server.ts",
     "server:start": "ts-node src/server/server.ts",
+    "start": "ts-node src/server/server.ts",
     "server:dev": "concurrently \"nodemon src/server/server.ts\" \"yarn generate-types --watch\"",
     "client:build": "webpack",
     "client:start": "webpack-dev-server",
