@@ -2,7 +2,7 @@
   "name": "graphql-server",
   "version": "1.0.0",
   "description": "node graphql server with code gen",
-  "main": "dist/server/server.ts",
+  "main": "dist/server/index.js",
   "engines": {
     "node": "14.x"
   },
