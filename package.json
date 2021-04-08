@@ -2,7 +2,7 @@
   "name": "graphql-server",
   "version": "1.0.0",
   "description": "node graphql server with code gen",
-  "main": "src/server/server.ts",
+  "main": "dist/server/server.ts",
   "engines": {
     "node": "14.x"
   },
@@ -11,10 +11,12 @@
     "generate-types": "graphql-codegen --config codegen.yml",
     "server:watch": "ts-node-dev src/server/server.ts",
     "server:start": "ts-node src/server/server.ts",
-    "start": "ts-node src/server/server.ts",
+    "server:build": "tsc -p . && copyfiles ./src/**/*.gql -f dist/graphql",
     "server:dev": "concurrently \"nodemon src/server/server.ts\" \"yarn generate-types --watch\"",
-    "client:build": "webpack",
+    "client:build": "webpack --mode production --progress",
     "client:start": "webpack-dev-server",
+    "start": "node dist/server/index.js",
+    "build": "yarn server:build && yarn client:build",
     "dev": "concurrently \"yarn server:dev\" \"yarn client:start\""
   },
   "author": "",
@@ -50,6 +52,7 @@
     "babel-loader": "^8.2.2",
     "chalk": "^4.1.0",
     "concurrently": "^6.0.1",
+    "copyfiles": "^2.4.1",
     "graphql-tag": "^2.11.0",
     "html-webpack-plugin": "^5.3.1",
     "nodemon": "^2.0.7",

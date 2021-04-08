@@ -5,6 +5,7 @@ module.exports = {
   mode: 'development',
   devtool: 'source-map',
   entry: './src/client/index.tsx',
+  target: 'web',
   module: {
     rules: [
       {
@@ -27,7 +28,7 @@ module.exports = {
     ],
   },
   resolve: {
-    extensions: ['.ts', '.js', '.json', '.tsx'],
+    extensions: ['.ts', '.js', '.jsx', '.tsx', '.json'],
   },
   output: {
     filename: 'bundle.js',
