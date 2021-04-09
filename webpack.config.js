@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 const Dotenv = require('dotenv-webpack');
 
+const isProduction = process.env.NODE_ENV === 'production';
 module.exports = {
   mode: 'development',
   devtool: 'source-map',
@@ -36,6 +37,7 @@ module.exports = {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist/public'),
     clean: true,
+    publicPath: isProduction ? '/public' : '/',
   },
   devServer: {
     contentBase: path.resolve(__dirname, 'dist/public'),
