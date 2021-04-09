@@ -9,7 +9,7 @@
   "scripts": {
     "generate-types": "graphql-codegen --config codegen.yml",
     "server:build": "tsc -p . && copyfiles ./src/**/*.gql -f dist/graphql",
-    "server:dev": "concurrently \"nodemon src/server/index.ts\" \"yarn generate-types --watch\"",
+    "server:dev": "concurrently \"nodemon -r dotenv/config src/server/index.ts\" \"yarn generate-types --watch\"",
     "client:build": "webpack --mode production --progress",
     "client:dev": "webpack-dev-server",
     "start": "node dist/server/index.js",
@@ -50,6 +50,8 @@
     "chalk": "^4.1.0",
     "concurrently": "^6.0.1",
     "copyfiles": "^2.4.1",
+    "dotenv": "^8.2.0",
+    "dotenv-webpack": "^7.0.2",
     "graphql-tag": "^2.11.0",
     "html-webpack-plugin": "^5.3.1",
     "nodemon": "^2.0.7",

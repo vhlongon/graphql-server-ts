@@ -1,5 +1,7 @@
+const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
+const Dotenv = require('dotenv-webpack');
 
 module.exports = {
   mode: 'development',
@@ -43,6 +45,10 @@ module.exports = {
   },
 
   plugins: [
+    // new webpack.DefinePlugin({
+    //   'process.env.TEST_VAR': JSON.stringify('WHATEVER'),
+    // }),
+    new Dotenv({ systemvars: true }),
     new HtmlWebpackPlugin({
       template: './src/client/index.html',
       hash: true, // This is useful for cache busting
