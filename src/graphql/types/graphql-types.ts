@@ -1,4 +1,8 @@
-import { GraphQLResolveInfo } from "graphql";
+import {
+  GraphQLResolveInfo,
+  GraphQLScalarType,
+  GraphQLScalarTypeConfig,
+} from "graphql";
 import { gql } from "@apollo/client";
 import * as Apollo from "@apollo/client";
 export type Maybe<T> = T | null;
@@ -21,33 +25,71 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  Date: any;
 };
 
 export type Film = {
-  producer: Scalars["String"];
-  title: Scalars["String"];
-  id: Scalars["Int"];
-  releaseDate: Scalars["String"];
-  openingCrawl: Scalars["String"];
+  created?: Maybe<Scalars["Date"]>;
   director: Scalars["String"];
+  edited?: Maybe<Scalars["Date"]>;
+  episodeId: Scalars["Int"];
+  id: Scalars["Int"];
+  openingCrawl: Scalars["String"];
+  producer: Scalars["String"];
+  releaseDate: Scalars["String"];
+  title: Scalars["String"];
+};
+
+export enum Gender {
+  male = "male",
+  female = "female",
+}
+
+export type Person = {
+  birthYear?: Maybe<Scalars["String"]>;
+  created?: Maybe<Scalars["Date"]>;
+  edited?: Maybe<Scalars["Date"]>;
+  eyeColor?: Maybe<Scalars["String"]>;
+  gender?: Maybe<Gender>;
+  hairColor?: Maybe<Array<Maybe<Scalars["String"]>>>;
+  height?: Maybe<Scalars["Float"]>;
+  id: Scalars["Int"];
+  mass?: Maybe<Scalars["Float"]>;
+  name: Scalars["String"];
+  skinColor?: Maybe<Array<Maybe<Scalars["String"]>>>;
 };
 
 export type Query = {
   films?: Maybe<Array<Film>>;
   film?: Maybe<Film>;
+  person?: Maybe<Person>;
+  people?: Maybe<Array<Person>>;
 };
 
 export type QueryFilmsArgs = {
-  sortBy?: Maybe<SortBy>;
+  sortBy?: Maybe<SortFilmsBy>;
 };
 
 export type QueryFilmArgs = {
   id: Scalars["Int"];
 };
 
-export enum SortBy {
-  ReleaseDate = "RELEASE_DATE",
-  Id = "ID",
+export type QueryPersonArgs = {
+  id: Scalars["Int"];
+};
+
+export type QueryPeopleArgs = {
+  sortBy?: Maybe<SortPeopleBy>;
+};
+
+export enum SortFilmsBy {
+  releaseDate = "releaseDate",
+  episodeId = "episodeId",
+}
+
+export enum SortPeopleBy {
+  id = "id",
+  name = "name",
 }
 
 export type ResolverTypeWrapper<T> = Promise<T> | T;
@@ -166,33 +208,79 @@ export type DirectiveResolverFn<
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
+  Date: ResolverTypeWrapper<Scalars["Date"]>;
   Film: ResolverTypeWrapper<Film>;
   String: ResolverTypeWrapper<Scalars["String"]>;
   Int: ResolverTypeWrapper<Scalars["Int"]>;
+  Gender: Gender;
+  Person: ResolverTypeWrapper<Person>;
+  Float: ResolverTypeWrapper<Scalars["Float"]>;
   Query: ResolverTypeWrapper<{}>;
-  SortBy: SortBy;
+  SortFilmsBy: SortFilmsBy;
+  SortPeopleBy: SortPeopleBy;
   Boolean: ResolverTypeWrapper<Scalars["Boolean"]>;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
+  Date: Scalars["Date"];
   Film: Film;
   String: Scalars["String"];
   Int: Scalars["Int"];
+  Person: Person;
+  Float: Scalars["Float"];
   Query: {};
   Boolean: Scalars["Boolean"];
 };
+
+export interface DateScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes["Date"], any> {
+  name: "Date";
+}
 
 export type FilmResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes["Film"] = ResolversParentTypes["Film"]
 > = {
-  producer?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
-  title?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
-  id?: Resolver<ResolversTypes["Int"], ParentType, ContextType>;
-  releaseDate?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
-  openingCrawl?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  created?: Resolver<Maybe<ResolversTypes["Date"]>, ParentType, ContextType>;
   director?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  edited?: Resolver<Maybe<ResolversTypes["Date"]>, ParentType, ContextType>;
+  episodeId?: Resolver<ResolversTypes["Int"], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes["Int"], ParentType, ContextType>;
+  openingCrawl?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  producer?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  releaseDate?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  title?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type PersonResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes["Person"] = ResolversParentTypes["Person"]
+> = {
+  birthYear?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType
+  >;
+  created?: Resolver<Maybe<ResolversTypes["Date"]>, ParentType, ContextType>;
+  edited?: Resolver<Maybe<ResolversTypes["Date"]>, ParentType, ContextType>;
+  eyeColor?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
+  gender?: Resolver<Maybe<ResolversTypes["Gender"]>, ParentType, ContextType>;
+  hairColor?: Resolver<
+    Maybe<Array<Maybe<ResolversTypes["String"]>>>,
+    ParentType,
+    ContextType
+  >;
+  height?: Resolver<Maybe<ResolversTypes["Float"]>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes["Int"], ParentType, ContextType>;
+  mass?: Resolver<Maybe<ResolversTypes["Float"]>, ParentType, ContextType>;
+  name?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  skinColor?: Resolver<
+    Maybe<Array<Maybe<ResolversTypes["String"]>>>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -212,10 +300,24 @@ export type QueryResolvers<
     ContextType,
     RequireFields<QueryFilmArgs, "id">
   >;
+  person?: Resolver<
+    Maybe<ResolversTypes["Person"]>,
+    ParentType,
+    ContextType,
+    RequireFields<QueryPersonArgs, "id">
+  >;
+  people?: Resolver<
+    Maybe<Array<ResolversTypes["Person"]>>,
+    ParentType,
+    ContextType,
+    RequireFields<QueryPeopleArgs, "sortBy">
+  >;
 };
 
 export type Resolvers<ContextType = any> = {
+  Date?: GraphQLScalarType;
   Film?: FilmResolvers<ContextType>;
+  Person?: PersonResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
 };
 
@@ -226,7 +328,7 @@ export type Resolvers<ContextType = any> = {
 export type IResolvers<ContextType = any> = Resolvers<ContextType>;
 
 export type GetFilmsQueryVariables = Exact<{
-  sortBy?: Maybe<SortBy>;
+  sortBy?: Maybe<SortFilmsBy>;
 }>;
 
 export type GetFilmsQuery = {
@@ -234,26 +336,28 @@ export type GetFilmsQuery = {
     Array<
       Pick<
         Film,
-        | "id"
+        | "episodeId"
         | "producer"
         | "title"
         | "releaseDate"
         | "openingCrawl"
         | "director"
+        | "id"
       >
     >
   >;
 };
 
 export const GetFilmsDocument = gql`
-  query GetFilms($sortBy: SortBy) {
+  query GetFilms($sortBy: SortFilmsBy) {
     films(sortBy: $sortBy) {
-      id
+      episodeId
       producer
       title
       releaseDate
       openingCrawl
       director
+      id
     }
   }
 `;

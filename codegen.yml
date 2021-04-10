@@ -19,3 +19,5 @@ generates:
     config:
       skipTypeNameForRoot: true
       skipTypename: true
+      namingConvention:
+        enumValues: keep

@@ -1,18 +1,50 @@
+scalar Date
+
 type Film {
-  producer: String!
-  title: String!
-  id: Int!
-  releaseDate: String!
-  openingCrawl: String!
+  created: Date
   director: String!
+  edited: Date
+  episodeId: Int!
+  id: Int!
+  openingCrawl: String!
+  producer: String!
+  releaseDate: String!
+  title: String!
 }
 
-enum SortBy {
-  RELEASE_DATE
-  ID
+enum SortFilmsBy {
+  releaseDate
+  episodeId
+}
+
+enum SortPeopleBy {
+  id
+  name
+}
+
+enum Gender {
+  male
+  female
+}
+
+type Person {
+  # homeworld: 1
+  birthYear: String
+  created: Date
+  edited: Date
+  eyeColor: String
+  gender: Gender
+  hairColor: [String]
+  height: Float
+  id: Int!
+  mass: Float
+  name: String!
+  skinColor: [String]
 }
 
 type Query {
-  films(sortBy: SortBy = ID): [Film!]
+  films(sortBy: SortFilmsBy = episodeId): [Film!]
   film(id: Int!): Film
+  person(id: Int!): Person
+  people(sortBy: SortPeopleBy = id): [Person!]
 }

@@ -1,10 +1,11 @@
-query GetFilms($sortBy: SortBy) {
+query GetFilms($sortBy: SortFilmsBy) {
   films(sortBy: $sortBy) {
-    id
+    episodeId
     producer
     title
     releaseDate
     openingCrawl
     director
+    id
   }
 }
