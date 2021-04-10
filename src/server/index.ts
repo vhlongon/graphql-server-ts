@@ -15,8 +15,6 @@ const server = new ApolloServer({
 const app = express();
 server.applyMiddleware({ app });
 
-console.log({ NODE_ENV: process.env.NODE_ENV });
-
 if (process.env.NODE_ENV === 'production') {
   app.use('/public', express.static(path.join(__dirname, '../public')));
   app.get('/', (req, res) => {

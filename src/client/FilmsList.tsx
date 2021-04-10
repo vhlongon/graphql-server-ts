@@ -1,9 +1,9 @@
 import React from 'react';
-import { useGetFilmsQuery, SortBy } from '../graphql/types/graphql-types';
+import { useGetFilmsQuery, SortFilmsBy } from '../graphql/types/graphql-types';
 
 const FilmsList = () => {
   const { data, loading, error } = useGetFilmsQuery({
-    variables: { sortBy: SortBy.ReleaseDate },
+    variables: { sortBy: SortFilmsBy.episodeId },
   });
 
   if (loading) {
@@ -18,11 +18,26 @@ const FilmsList = () => {
     <div>
       <h1>SW Movies</h1>
       <ul>
-        {data?.films?.map(({ id, releaseDate, title, director }) => (
-          <li key={id}>
-            Episode: {id} || {title} || {releaseDate} || {director}
-          </li>
-        ))}
+        {data?.films?.map(
+          ({
+            id,
+            releaseDate,
+            title,
+            director,
+            episodeId,
+            created,
+            edited,
+          }) => (
+            <li key={id}>
+              <div>
+                Episode: {episodeId} || {title} || {releaseDate} || {director}
+              </div>
+              <div>
+                created: {created} || edited: {edited}
+              </div>
+            </li>
+          )
+        )}
       </ul>
     </div>
   );

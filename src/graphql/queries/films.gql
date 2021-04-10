@@ -1,5 +1,7 @@
 query GetFilms($sortBy: SortFilmsBy) {
   films(sortBy: $sortBy) {
+    created
+    edited
     episodeId
     producer
     title

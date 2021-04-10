@@ -336,6 +336,8 @@ export type GetFilmsQuery = {
     Array<
       Pick<
         Film,
+        | "created"
+        | "edited"
         | "episodeId"
         | "producer"
         | "title"
@@ -351,6 +353,8 @@ export type GetFilmsQuery = {
 export const GetFilmsDocument = gql`
   query GetFilms($sortBy: SortFilmsBy) {
     films(sortBy: $sortBy) {
+      created
+      edited
       episodeId
       producer
       title
