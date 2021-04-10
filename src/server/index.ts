@@ -24,6 +24,6 @@ if (process.env.NODE_ENV === 'production') {
 
 app.listen({ port: process.env.PORT }, () =>
   console.log(
-    `🚀 Server ready at ${process.env.API_URL}:${process.env.PORT}${server.graphqlPath}`
-  )
+    `🚀 Server ready at ${process.env.API_URL}:${process.env.PORT}${server.graphqlPath}`,
+  ),
 );

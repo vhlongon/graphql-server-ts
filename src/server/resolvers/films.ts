@@ -10,7 +10,7 @@ import { FilmMainData, Response } from '../types';
 
 export const filmsResolver: QueryResolvers['films'] = async (
   _,
-  { sortBy }: QueryFilmsArgs = {}
+  { sortBy }: QueryFilmsArgs = {},
 ) => {
   const response = await fetch(`${REST_API}/films`);
   const data: Response<FilmMainData>[] = await response.json();

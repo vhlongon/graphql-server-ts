@@ -18,5 +18,5 @@ render(
   <ApolloProvider client={client}>
     <App />
   </ApolloProvider>,
-  root
+  root,
 );

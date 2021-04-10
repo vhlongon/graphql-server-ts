@@ -36,7 +36,7 @@ const FilmsList = () => {
                 created: {created} || edited: {edited}
               </div>
             </li>
-          )
+          ),
         )}
       </ul>
     </div>

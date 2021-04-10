@@ -10,7 +10,7 @@ import { PersonMainData, Response } from '../types';
 
 export const peopleResolver: QueryResolvers['people'] = async (
   _,
-  { sortBy }: QueryPeopleArgs = {}
+  { sortBy }: QueryPeopleArgs = {},
 ) => {
   const response = await fetch(`${REST_API}/people`);
   const data: Response<PersonMainData>[] = await response.json();

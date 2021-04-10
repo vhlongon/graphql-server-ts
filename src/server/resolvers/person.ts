@@ -5,12 +5,11 @@ import {
   QueryFilmArgs,
   QueryResolvers,
 } from '../../graphql/types/graphql-types';
-import { transformFilm } from '../helpers';
 import { PersonMainData, Response } from '../types';
 
 export const personResolver: QueryResolvers['person'] = async (
   _,
-  args: QueryFilmArgs
+  args: QueryFilmArgs,
 ) => {
   const response = await fetch(`${REST_API}/people`);
   const data: Response<PersonMainData>[] = await response.json();

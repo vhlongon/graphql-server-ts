@@ -2,28 +2,28 @@ import { Film, Gender, Person } from '../graphql/types/graphql-types';
 import { FilmMainData, PersonMainData, Response } from './types';
 
 export const sortByReleaseDate = (
-  data: Response<FilmMainData>[]
+  data: Response<FilmMainData>[],
 ): Response<FilmMainData>[] =>
   data.sort(
     (a, b) =>
       new Date(a.fields.release_date).getTime() -
-      new Date(b.fields.release_date).getTime()
+      new Date(b.fields.release_date).getTime(),
   );
 
 export const sortByEpisode = (
-  data: Response<FilmMainData>[]
+  data: Response<FilmMainData>[],
 ): Response<FilmMainData>[] =>
   data.sort((a, b) => a.fields.episode_id - b.fields.episode_id);
 
 export const sortByName = (
-  data: Response<PersonMainData>[]
+  data: Response<PersonMainData>[],
 ): Response<PersonMainData>[] =>
   data.sort((a, b) =>
-    a.fields.name.toLowerCase().localeCompare(b.fields.name.toLowerCase())
+    a.fields.name.toLowerCase().localeCompare(b.fields.name.toLowerCase()),
   );
 
 export const sortById = (
-  data: Response<PersonMainData>[]
+  data: Response<PersonMainData>[],
 ): Response<PersonMainData>[] => data.sort((a, b) => a.id - b.id);
 
 export const transformFilm = ({
