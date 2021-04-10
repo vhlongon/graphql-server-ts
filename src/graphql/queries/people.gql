@@ -1,0 +1,9 @@
+query GetPeople($sortBy: SortPeopleBy) {
+  people(sortBy: $sortBy) {
+    name
+    gender
+    id
+    created
+    edited
+  }
+}
