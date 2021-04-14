@@ -22,6 +22,20 @@ export type PersonMainData = {
   skin_Color: string[];
 };
 
+export type PlanetMainData = {
+  climate: string[];
+  created: string;
+  diameter: string;
+  edited: string;
+  gravity: string;
+  name: string;
+  orbital_period: string;
+  population: string;
+  rotation_period: string;
+  surface_water: string;
+  terrain: string[];
+};
+
 export type Response<T> = {
   fields: T;
   id: number;

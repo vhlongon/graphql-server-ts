@@ -1,5 +1,10 @@
-import { Film, Gender, Person } from '../graphql/types/graphql-types';
-import { FilmMainData, PersonMainData, Response } from './types';
+import { Film, Gender, Person, Planet } from '../graphql/types/graphql-types';
+import {
+  FilmMainData,
+  PersonMainData,
+  Response,
+  PlanetMainData,
+} from './types';
 
 export const sortByReleaseDate = (
   data: Response<FilmMainData>[],
@@ -15,16 +20,22 @@ export const sortByEpisode = (
 ): Response<FilmMainData>[] =>
   data.sort((a, b) => a.fields.episode_id - b.fields.episode_id);
 
-export const sortByName = (
-  data: Response<PersonMainData>[],
-): Response<PersonMainData>[] =>
+interface WithName {
+  name: string;
+}
+export const sortByName = <T extends WithName>(
+  data: Response<T>[],
+): Response<T>[] =>
   data.sort((a, b) =>
     a.fields.name.toLowerCase().localeCompare(b.fields.name.toLowerCase()),
   );
 
-export const sortById = (
-  data: Response<PersonMainData>[],
-): Response<PersonMainData>[] => data.sort((a, b) => a.id - b.id);
+interface WithId {
+  id: number;
+}
+
+export const sortById = <T extends WithId>(data: T[]): T[] =>
+  data.sort((a, b) => a.id - b.id);
 
 export const transformFilm = ({
   fields: { created, edited, episode_id, opening_crawl, release_date, ...rest },
@@ -46,7 +57,7 @@ const transformToArrayOrNull = (input: unknown): [] | string[] | null => {
 
   if (
     typeof input === 'string' &&
-    input !== 'unknow' &&
+    input !== 'unknown' &&
     input !== 'n/a' &&
     input !== 'none'
   ) {
@@ -95,5 +106,35 @@ export const transformPerson = ({
   mass: transformToNumberOrNull(mass),
   skinColor: transformToArrayOrNull(skin_Color),
   ...rest,
+  id,
+});
+
+export const transformPlanet = ({
+  fields: {
+    climate,
+    created,
+    diameter,
+    edited,
+    gravity,
+    name,
+    orbital_period,
+    population,
+    rotation_period,
+    surface_water,
+    terrain,
+  },
+  id,
+}: Response<PlanetMainData>): Planet => ({
+  climate: transformToArrayOrNull(climate),
+  created: new Date(created),
+  diameter: transformToNumberOrNull(diameter),
+  edited: new Date(edited),
+  gravity: transformToNumberOrNull(gravity),
+  name,
+  orbitalPeriod: transformToNumberOrNull(orbital_period),
+  population: transformToNumberOrNull(population),
+  rotationPeriod: transformToNumberOrNull(rotation_period),
+  surfaceWater: transformToNumberOrNull(surface_water),
+  terrain: transformToArrayOrNull(terrain),
   id,
 });

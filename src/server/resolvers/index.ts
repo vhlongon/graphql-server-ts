@@ -1,9 +1,11 @@
+import { planetsResolver } from './planets';
 import { Resolvers } from '../../graphql/types/graphql-types';
 import { filmsResolver } from './films';
 import { DateTimeResolver } from 'graphql-scalars';
 import { filmResolver } from './film';
 import { peopleResolver } from './people';
 import { personResolver } from './person';
+import { planetResolver } from './planet';
 
 export const resolvers: Resolvers = {
   Date: DateTimeResolver,
@@ -12,5 +14,7 @@ export const resolvers: Resolvers = {
     film: filmResolver,
     people: peopleResolver,
     person: personResolver,
+    planets: planetsResolver,
+    planet: planetResolver,
   },
 };

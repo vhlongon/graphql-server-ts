@@ -12,11 +12,11 @@ export const filmResolver: QueryResolvers['film'] = async (
   args: QueryFilmArgs,
 ) => {
   const response = await fetch(`${REST_API}/films/${args.id}`);
-  const selectedFilm: Response<FilmMainData> = await response.json();
+  const data: Response<FilmMainData> = await response.json();
 
-  if (!selectedFilm) {
+  if (Object.keys(data).length <= 0) {
     throw new Error(`film with id: ${args.id} not found`);
   }
 
-  return transformFilm(selectedFilm);
+  return transformFilm(data);
 };
