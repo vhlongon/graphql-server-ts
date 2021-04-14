@@ -1,0 +1,7 @@
+query GetPlanets($sortBy: SortByNameOrId) {
+  planets(sortBy: $sortBy) {
+    name
+    population
+    id
+  }
+}

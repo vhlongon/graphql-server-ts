@@ -443,6 +443,14 @@ export type GetPeopleQuery = {
   >;
 };
 
+export type GetPlanetsQueryVariables = Exact<{
+  sortBy?: Maybe<SortByNameOrId>;
+}>;
+
+export type GetPlanetsQuery = {
+  planets?: Maybe<Array<Pick<Planet, 'name' | 'population' | 'id'>>>;
+};
+
 export const GetFilmsDocument = gql`
   query GetFilms($sortBy: SortFilmsBy) {
     films(sortBy: $sortBy) {
@@ -563,4 +571,62 @@ export type GetPeopleLazyQueryHookResult = ReturnType<
 export type GetPeopleQueryResult = Apollo.QueryResult<
   GetPeopleQuery,
   GetPeopleQueryVariables
+>;
+export const GetPlanetsDocument = gql`
+  query GetPlanets($sortBy: SortByNameOrId) {
+    planets(sortBy: $sortBy) {
+      name
+      population
+      id
+    }
+  }
+`;
+
+/**
+ * __useGetPlanetsQuery__
+ *
+ * To run a query within a React component, call `useGetPlanetsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetPlanetsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetPlanetsQuery({
+ *   variables: {
+ *      sortBy: // value for 'sortBy'
+ *   },
+ * });
+ */
+export function useGetPlanetsQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    GetPlanetsQuery,
+    GetPlanetsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetPlanetsQuery, GetPlanetsQueryVariables>(
+    GetPlanetsDocument,
+    options,
+  );
+}
+export function useGetPlanetsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetPlanetsQuery,
+    GetPlanetsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GetPlanetsQuery, GetPlanetsQueryVariables>(
+    GetPlanetsDocument,
+    options,
+  );
+}
+export type GetPlanetsQueryHookResult = ReturnType<typeof useGetPlanetsQuery>;
+export type GetPlanetsLazyQueryHookResult = ReturnType<
+  typeof useGetPlanetsLazyQuery
+>;
+export type GetPlanetsQueryResult = Apollo.QueryResult<
+  GetPlanetsQuery,
+  GetPlanetsQueryVariables
 >;
