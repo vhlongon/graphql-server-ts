@@ -11,10 +11,8 @@ export const filmResolver: QueryResolvers['film'] = async (
   _,
   args: QueryFilmArgs,
 ) => {
-  const response = await fetch(`${REST_API}/films`);
-  const data: Response<FilmMainData>[] = await response.json();
-
-  const selectedFilm = data.find(({ fields }) => fields.episode_id === args.id);
+  const response = await fetch(`${REST_API}/films/${args.id}`);
+  const selectedFilm: Response<FilmMainData> = await response.json();
 
   if (!selectedFilm) {
     throw new Error(`film with id: ${args.id} not found`);

@@ -11,9 +11,8 @@ export const personResolver: QueryResolvers['person'] = async (
   _,
   args: QueryFilmArgs,
 ) => {
-  const response = await fetch(`${REST_API}/people`);
-  const data: Response<PersonMainData>[] = await response.json();
-  const selectedPerson = data.find(({ id }) => id === args.id);
+  const response = await fetch(`${REST_API}/people/${args.id}`);
+  const selectedPerson: Response<PersonMainData> = await response.json();
 
   if (!selectedPerson) {
     throw new Error(`Person with id: ${args.id} not found`);
