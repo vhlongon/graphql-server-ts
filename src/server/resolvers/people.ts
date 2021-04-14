@@ -1,6 +1,7 @@
 import fetch from 'node-fetch';
 import { PersonMainData, Response } from '../types';
 import { sortById, sortByName, transformPerson } from './../helpers';
+import graphqlFields from 'graphql-fields';
 import {
   QueryResolvers,
   QueryPeopleArgs,
@@ -9,9 +10,14 @@ import {
 import { REST_API } from '../constants';
 
 export const peopleResolver: QueryResolvers['people'] = async (
-  _,
+  root,
   { sortBy }: QueryPeopleArgs = {},
+  context,
+  info,
 ) => {
+  // check if a field has been request, like planet, then make a rest call to planets/id
+  const fieldsInfo = graphqlFields(info);
+  console.log(fieldsInfo);
   const response = await fetch(`${REST_API}/people`);
   const data: Response<PersonMainData>[] = await response.json();
   const sorted =
