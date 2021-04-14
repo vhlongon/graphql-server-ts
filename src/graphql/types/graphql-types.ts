@@ -59,11 +59,28 @@ export type Person = {
   skinColor?: Maybe<Array<Maybe<Scalars['String']>>>;
 };
 
+export type Planet = {
+  edited?: Maybe<Scalars['Date']>;
+  created?: Maybe<Scalars['Date']>;
+  climate?: Maybe<Array<Maybe<Scalars['String']>>>;
+  id: Scalars['Int'];
+  surfaceWater?: Maybe<Scalars['Float']>;
+  name: Scalars['String'];
+  diameter?: Maybe<Scalars['Int']>;
+  rotationPeriod?: Maybe<Scalars['Int']>;
+  terrain?: Maybe<Array<Maybe<Scalars['String']>>>;
+  gravity?: Maybe<Scalars['Float']>;
+  orbitalPeriod?: Maybe<Scalars['Int']>;
+  population?: Maybe<Scalars['Float']>;
+};
+
 export type Query = {
   films?: Maybe<Array<Film>>;
   film?: Maybe<Film>;
   person?: Maybe<Person>;
   people?: Maybe<Array<Person>>;
+  planets?: Maybe<Array<Planet>>;
+  planet?: Maybe<Planet>;
 };
 
 export type QueryFilmsArgs = {
@@ -79,17 +96,25 @@ export type QueryPersonArgs = {
 };
 
 export type QueryPeopleArgs = {
-  sortBy?: Maybe<SortPeopleBy>;
+  sortBy?: Maybe<SortByNameOrId>;
 };
+
+export type QueryPlanetsArgs = {
+  sortBy?: Maybe<SortByNameOrId>;
+};
+
+export type QueryPlanetArgs = {
+  id: Scalars['Int'];
+};
+
+export enum SortByNameOrId {
+  id = 'id',
+  name = 'name',
+}
 
 export enum SortFilmsBy {
   releaseDate = 'releaseDate',
   episodeId = 'episodeId',
-}
-
-export enum SortPeopleBy {
-  id = 'id',
-  name = 'name',
 }
 
 export type ResolverTypeWrapper<T> = Promise<T> | T;
@@ -215,9 +240,10 @@ export type ResolversTypes = {
   Gender: Gender;
   Person: ResolverTypeWrapper<Person>;
   Float: ResolverTypeWrapper<Scalars['Float']>;
+  Planet: ResolverTypeWrapper<Planet>;
   Query: ResolverTypeWrapper<{}>;
+  SortByNameOrId: SortByNameOrId;
   SortFilmsBy: SortFilmsBy;
-  SortPeopleBy: SortPeopleBy;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
 };
 
@@ -229,6 +255,7 @@ export type ResolversParentTypes = {
   Int: Scalars['Int'];
   Person: Person;
   Float: Scalars['Float'];
+  Planet: Planet;
   Query: {};
   Boolean: Scalars['Boolean'];
 };
@@ -284,6 +311,49 @@ export type PersonResolvers<
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type PlanetResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Planet'] = ResolversParentTypes['Planet']
+> = {
+  edited?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
+  created?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
+  climate?: Resolver<
+    Maybe<Array<Maybe<ResolversTypes['String']>>>,
+    ParentType,
+    ContextType
+  >;
+  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  surfaceWater?: Resolver<
+    Maybe<ResolversTypes['Float']>,
+    ParentType,
+    ContextType
+  >;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  diameter?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  rotationPeriod?: Resolver<
+    Maybe<ResolversTypes['Int']>,
+    ParentType,
+    ContextType
+  >;
+  terrain?: Resolver<
+    Maybe<Array<Maybe<ResolversTypes['String']>>>,
+    ParentType,
+    ContextType
+  >;
+  gravity?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
+  orbitalPeriod?: Resolver<
+    Maybe<ResolversTypes['Int']>,
+    ParentType,
+    ContextType
+  >;
+  population?: Resolver<
+    Maybe<ResolversTypes['Float']>,
+    ParentType,
+    ContextType
+  >;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type QueryResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']
@@ -312,12 +382,25 @@ export type QueryResolvers<
     ContextType,
     RequireFields<QueryPeopleArgs, 'sortBy'>
   >;
+  planets?: Resolver<
+    Maybe<Array<ResolversTypes['Planet']>>,
+    ParentType,
+    ContextType,
+    RequireFields<QueryPlanetsArgs, 'sortBy'>
+  >;
+  planet?: Resolver<
+    Maybe<ResolversTypes['Planet']>,
+    ParentType,
+    ContextType,
+    RequireFields<QueryPlanetArgs, 'id'>
+  >;
 };
 
 export type Resolvers<ContextType = any> = {
   Date?: GraphQLScalarType;
   Film?: FilmResolvers<ContextType>;
   Person?: PersonResolvers<ContextType>;
+  Planet?: PlanetResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
 };
 
@@ -351,7 +434,7 @@ export type GetFilmsQuery = {
 };
 
 export type GetPeopleQueryVariables = Exact<{
-  sortBy?: Maybe<SortPeopleBy>;
+  sortBy?: Maybe<SortByNameOrId>;
 }>;
 
 export type GetPeopleQuery = {
@@ -422,7 +505,7 @@ export type GetFilmsQueryResult = Apollo.QueryResult<
   GetFilmsQueryVariables
 >;
 export const GetPeopleDocument = gql`
-  query GetPeople($sortBy: SortPeopleBy) {
+  query GetPeople($sortBy: SortByNameOrId) {
     people(sortBy: $sortBy) {
       name
       gender

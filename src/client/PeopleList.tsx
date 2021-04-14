@@ -1,12 +1,12 @@
 import React from 'react';
 import {
   useGetPeopleQuery,
-  SortPeopleBy,
+  SortByNameOrId,
 } from '../graphql/types/graphql-types';
 
 const PeopleList = () => {
   const { data, loading, error } = useGetPeopleQuery({
-    variables: { sortBy: SortPeopleBy.name },
+    variables: { sortBy: SortByNameOrId.name },
   });
 
   if (loading) {

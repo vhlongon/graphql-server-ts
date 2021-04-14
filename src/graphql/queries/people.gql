@@ -1,4 +1,4 @@
-query GetPeople($sortBy: SortPeopleBy) {
+query GetPeople($sortBy: SortByNameOrId) {
   people(sortBy: $sortBy) {
     name
     gender

@@ -1,5 +1,20 @@
 scalar Date
 
+enum SortFilmsBy {
+  releaseDate
+  episodeId
+}
+
+enum SortByNameOrId {
+  id
+  name
+}
+
+enum Gender {
+  male
+  female
+}
+
 type Film {
   created: Date
   director: String!
@@ -10,21 +25,6 @@ type Film {
   producer: String!
   releaseDate: String!
   title: String!
-}
-
-enum SortFilmsBy {
-  releaseDate
-  episodeId
-}
-
-enum SortPeopleBy {
-  id
-  name
-}
-
-enum Gender {
-  male
-  female
 }
 
 type Person {
@@ -42,9 +42,26 @@ type Person {
   skinColor: [String]
 }
 
+type Planet {
+  edited: Date
+  created: Date
+  climate: [String]
+  id: Int!
+  surfaceWater: Float
+  name: String!
+  diameter: Int
+  rotationPeriod: Int
+  terrain: [String]
+  gravity: Float
+  orbitalPeriod: Int
+  population: Float
+}
+
 type Query {
   films(sortBy: SortFilmsBy = episodeId): [Film!]
   film(id: Int!): Film
   person(id: Int!): Person
-  people(sortBy: SortPeopleBy = id): [Person!]
+  people(sortBy: SortByNameOrId = id): [Person!]
+  planets(sortBy: SortByNameOrId = id): [Planet!]
+  planet(id: Int!): Planet
 }
