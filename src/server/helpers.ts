@@ -57,14 +57,19 @@ export const transformFilm = ({
   id,
 });
 
+const isValidString = (input: string): boolean =>
+  !['unknown', 'n/a', 'none'].includes(input);
+
+const transformToValidStringOrNull = (input: string): string | null =>
+  isValidString(input) ? input : null;
+
 const transformToArrayOrNull = (input: unknown): [] | string[] | null => {
   if (Array.isArray(input)) {
     return input;
   }
 
   if (typeof input === 'string') {
-    const unknownValues = ['unknown', 'n/a', 'none'].includes(input);
-    return unknownValues ? null : input.split(',').map((s) => s.trim());
+    return isValidString(input) ? null : input.split(',').map((s) => s.trim());
   }
 
   return null;
@@ -137,7 +142,7 @@ export const transformSpecies = ({
   skinColors: transformToArrayOrNull(skin_colors),
   classification,
   designation,
-  language,
+  language: transformToValidStringOrNull(language),
   name,
   id,
 });
