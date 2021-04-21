@@ -98,7 +98,7 @@ export const transformPerson = ({
     ...rest
   },
   id,
-}: Response<PersonMainData>): Person => ({
+}: Response<PersonMainData>): Omit<Person, 'homeworld'> => ({
   birthYear: birth_year,
   created: new Date(created),
   edited: new Date(edited),

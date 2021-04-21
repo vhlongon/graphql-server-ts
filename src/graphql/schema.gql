@@ -37,8 +37,23 @@ type Film {
   title: String!
 }
 
+type Planet {
+  edited: Date
+  created: Date
+  climate: [String]
+  id: Int!
+  surfaceWater: Float
+  name: String!
+  diameter: Int
+  rotationPeriod: Int
+  terrain: [String]
+  gravity: Float
+  orbitalPeriod: Int
+  population: Float
+}
+
 type Person {
-  # homeworld: Int
+  homeworld: Planet
   birthYear: String
   created: Date
   edited: Date
@@ -69,20 +84,6 @@ type Species {
   averageHeight: Int
 }
 
-type Planet {
-  edited: Date
-  created: Date
-  climate: [String]
-  id: Int!
-  surfaceWater: Float
-  name: String!
-  diameter: Int
-  rotationPeriod: Int
-  terrain: [String]
-  gravity: Float
-  orbitalPeriod: Int
-  population: Float
-}
 
 type Query {
   films(sortBy: SortFilmsBy = episodeId): [Film!]

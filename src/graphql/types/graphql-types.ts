@@ -46,6 +46,7 @@ export enum Gender {
 }
 
 export type Person = {
+  homeworld?: Maybe<Planet>;
   birthYear?: Maybe<Scalars['String']>;
   created?: Maybe<Scalars['Date']>;
   edited?: Maybe<Scalars['Date']>;
@@ -314,6 +315,11 @@ export type PersonResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['Person'] = ResolversParentTypes['Person']
 > = {
+  homeworld?: Resolver<
+    Maybe<ResolversTypes['Planet']>,
+    ParentType,
+    ContextType
+  >;
   birthYear?: Resolver<
     Maybe<ResolversTypes['String']>,
     ParentType,

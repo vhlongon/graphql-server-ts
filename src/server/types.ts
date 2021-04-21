@@ -16,8 +16,9 @@ export type PersonMainData = {
   eye_color: string;
   gender: string;
   hair_color: string | string[];
-  height: number;
-  mass: number;
+  height: string;
+  homeworld: string;
+  mass: string;
   name: string;
   skin_Color: string | string[];
 };
