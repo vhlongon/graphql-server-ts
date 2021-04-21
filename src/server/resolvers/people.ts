@@ -1,6 +1,11 @@
 import fetch from 'node-fetch';
-import { PersonMainData, Response } from '../types';
-import { sortById, sortByName, transformPerson } from './../helpers';
+import { PersonMainData, PlanetMainData, Response } from '../types';
+import {
+  sortById,
+  sortByName,
+  transformPerson,
+  transformPlanet,
+} from './../helpers';
 import graphqlFields from 'graphql-fields';
 import {
   QueryResolvers,
@@ -10,20 +15,35 @@ import {
 import { REST_API } from '../constants';
 
 export const peopleResolver: QueryResolvers['people'] = async (
-  root,
+  _,
   { sortBy }: QueryPeopleArgs = {},
   context,
   info,
 ) => {
-  // check if a field has been request, like planet, then make a rest call to planets/id
   const fieldsInfo = graphqlFields(info);
-  console.log(fieldsInfo);
+  const hasPlanetInQuery = Object.keys(fieldsInfo).includes('homeworld');
   const response = await fetch(`${REST_API}/people`);
-  const data: Response<PersonMainData>[] = await response.json();
+  const people: Response<PersonMainData>[] = await response.json();
   const sorted =
     sortBy === SortByNameOrId.name
-      ? sortByName<PersonMainData>(data)
-      : sortById<Response<PersonMainData>>(data);
+      ? sortByName<PersonMainData>(people)
+      : sortById<Response<PersonMainData>>(people);
+
+  if (hasPlanetInQuery) {
+    const peopleWithPlanets = await Promise.all(
+      sorted.map(async (person) => {
+        const { homeworld } = person.fields;
+        const response = await fetch(`${REST_API}/planets/${homeworld}`);
+        const planet: Response<PlanetMainData> = await response.json();
+        return { person, planet };
+      }),
+    );
+
+    return peopleWithPlanets.map(({ person, planet }) => ({
+      ...transformPerson(person),
+      homeworld: transformPlanet(planet),
+    }));
+  }
 
   return sorted.map(transformPerson);
 };

@@ -17,7 +17,6 @@ export const personResolver: QueryResolvers['person'] = async (
 ) => {
   const fieldsInfo = graphqlFields(info);
   const hasPlanetInQuery = Object.keys(fieldsInfo).includes('homeworld');
-
   const response = await fetch(`${REST_API}/people/${args.id}`);
   const data: Response<PersonMainData> = await response.json();
 
@@ -28,8 +27,8 @@ export const personResolver: QueryResolvers['person'] = async (
   const person = transformPerson(data);
 
   if (hasPlanetInQuery) {
-    const planetId = data.fields.homeworld;
-    const response = await fetch(`${REST_API}/planets/${planetId}`);
+    const { homeworld } = data.fields;
+    const response = await fetch(`${REST_API}/planets/${homeworld}`);
     const planetData: Response<PlanetMainData> = await response.json();
 
     return { ...person, homeworld: transformPlanet(planetData) };
