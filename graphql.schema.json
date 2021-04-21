@@ -662,6 +662,14 @@
         "description": null,
         "fields": [
           {
+            "name": "homeworld",
+            "description": null,
+            "args": [],
+            "type": { "kind": "OBJECT", "name": "Planet", "ofType": null },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "classification",
             "description": null,
             "args": [],

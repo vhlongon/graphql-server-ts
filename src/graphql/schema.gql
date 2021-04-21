@@ -68,7 +68,7 @@ type Person {
 }
 
 type Species {
-  # homeworld: Int
+  homeworld: Planet
   # people: [Int]
   classification: String
   created: Date

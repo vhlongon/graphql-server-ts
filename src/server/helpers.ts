@@ -116,12 +116,15 @@ export const transformSpecies = ({
   fields: {
     average_height,
     average_lifespan,
+    classification,
     created,
+    designation,
     edited,
     eye_colors,
     hair_colors,
+    language,
+    name,
     skin_colors,
-    ...rest
   },
   id,
 }: Response<SpeciesMainData>): Species => ({
@@ -132,7 +135,10 @@ export const transformSpecies = ({
   hairColors: transformToArrayOrNull(hair_colors),
   eyeColors: transformToArrayOrNull(eye_colors),
   skinColors: transformToArrayOrNull(skin_colors),
-  ...rest,
+  classification,
+  designation,
+  language,
+  name,
   id,
 });
 

@@ -17,7 +17,7 @@ export type PersonMainData = {
   gender: string;
   hair_color: string | string[];
   height: string;
-  homeworld: string;
+  homeworld: number;
   mass: string;
   name: string;
   skin_Color: string | string[];
@@ -32,6 +32,7 @@ export type SpeciesMainData = {
   edited: string;
   eye_colors: string | string[];
   hair_colors: string | string[];
+  homeworld?: number;
   language: string;
   name: string;
   skin_colors: string | string[];
