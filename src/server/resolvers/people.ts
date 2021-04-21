@@ -30,19 +30,17 @@ export const peopleResolver: QueryResolvers['people'] = async (
       : sortById<Response<PersonMainData>>(people);
 
   if (hasPlanetInQuery) {
-    const peopleWithPlanets = await Promise.all(
+    return await Promise.all(
       sorted.map(async (person) => {
         const { homeworld } = person.fields;
         const response = await fetch(`${REST_API}/planets/${homeworld}`);
         const planet: Response<PlanetMainData> = await response.json();
-        return { person, planet };
+        return {
+          ...transformPerson(person),
+          homeworld: transformPlanet(planet),
+        };
       }),
     );
-
-    return peopleWithPlanets.map(({ person, planet }) => ({
-      ...transformPerson(person),
-      homeworld: transformPlanet(planet),
-    }));
   }
 
   return sorted.map(transformPerson);
