@@ -1,12 +1,19 @@
-import { PlanetMainData, Response, SpeciesMainData } from './../types';
+import {
+  PersonMainData,
+  PlanetMainData,
+  Response,
+  SpeciesMainData,
+} from './../types';
 import fetch from 'node-fetch';
 import {
   sortById,
   sortByName,
+  transformPerson,
   transformPlanet,
   transformSpecies,
 } from './../helpers';
 import {
+  Person,
   Planet,
   QueryResolvers,
   QuerySpeciesArgs,
@@ -24,6 +31,15 @@ const fetchPlanet = async (id?: number): Promise<Planet | null> => {
   return transformPlanet(planetData);
 };
 
+const fetchPerson = async (id?: number): Promise<Person | null> => {
+  if (!id) {
+    return null;
+  }
+  const response = await fetch(`${REST_API}/people/${id}`);
+  const personData: Response<PersonMainData> = await response.json();
+  return transformPerson(personData);
+};
+
 export const speciesResolver: QueryResolvers['species'] = async (
   _,
   { input }: QuerySpeciesArgs = {},
@@ -32,6 +48,7 @@ export const speciesResolver: QueryResolvers['species'] = async (
 ) => {
   const fieldsInfo = graphqlFields(info);
   const hasPlanetInQuery = Object.keys(fieldsInfo).includes('homeworld');
+  const hasPeopleInQuery = Object.keys(fieldsInfo).includes('people');
 
   if (input?.id) {
     const response = await fetch(`${REST_API}/species/${input.id}`);
@@ -41,14 +58,27 @@ export const speciesResolver: QueryResolvers['species'] = async (
       throw new Error(`Species with id: ${input.id} not found`);
     }
 
-    const species = transformSpecies(data);
+    // initially only add the transformed data for person
+    let singleSpecies = transformSpecies(data);
 
+    // when the planet is request add to the response
     if (hasPlanetInQuery) {
       const homeworld = await fetchPlanet(data.fields.homeworld);
-      return [{ ...species, homeworld }];
+      singleSpecies = { ...singleSpecies, homeworld };
     }
 
-    return [species];
+    // when the people is request add to the response
+    if (hasPeopleInQuery) {
+      const people = await Promise.all(
+        data.fields.people.map(async (personId) => {
+          return await fetchPerson(personId);
+        }),
+      );
+
+      singleSpecies = { ...singleSpecies, people };
+    }
+
+    return [singleSpecies];
   }
 
   const response = await fetch(`${REST_API}/species`);
@@ -58,14 +88,49 @@ export const speciesResolver: QueryResolvers['species'] = async (
       ? sortByName<SpeciesMainData>(data)
       : sortById<Response<SpeciesMainData>>(data);
 
+  // same as above but first scenario is a list of all transformed species
+  let multipleSpecies = sorted.map(transformSpecies);
+
+  // when the planet is required add it for each species
   if (hasPlanetInQuery) {
-    return await Promise.all(
+    const speciesWithPlanets = await Promise.all(
       sorted.map(async (species) => {
         const homeworld = await fetchPlanet(species.fields.homeworld);
         return { ...transformSpecies(species), homeworld };
       }),
     );
+
+    // finally return the final object containing the requested fields
+    multipleSpecies = speciesWithPlanets;
   }
 
-  return sorted.map(transformSpecies);
+  // here is a bit more complex since besides iterating over each species
+  // we also have to iterate over each person in people field for that species
+  if (hasPeopleInQuery) {
+    const peopleForAllSpecies = await Promise.all(
+      sorted.map(async (species) => {
+        const people = await Promise.all(
+          species.fields.people.map(async (personId) => {
+            return await fetchPerson(personId);
+          }),
+        );
+        return { id: species.id, people };
+      }),
+    );
+
+    const speciesWithPeople = multipleSpecies.map((species) => {
+      const people = peopleForAllSpecies.find(({ id }) => id === species.id)
+        ?.people;
+      return {
+        ...species,
+        people,
+      };
+    });
+
+    // finally return the final object containing the requested fields
+    // species and/or people and planets
+    multipleSpecies = speciesWithPeople;
+  }
+
+  return multipleSpecies;
 };

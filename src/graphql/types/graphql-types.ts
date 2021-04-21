@@ -125,6 +125,7 @@ export enum SortFilmsBy {
 
 export type Species = {
   homeworld?: Maybe<Planet>;
+  people?: Maybe<Array<Maybe<Person>>>;
   classification?: Maybe<Scalars['String']>;
   created?: Maybe<Scalars['Date']>;
   designation: Scalars['String'];
@@ -444,6 +445,11 @@ export type SpeciesResolvers<
 > = {
   homeworld?: Resolver<
     Maybe<ResolversTypes['Planet']>,
+    ParentType,
+    ContextType
+  >;
+  people?: Resolver<
+    Maybe<Array<Maybe<ResolversTypes['Person']>>>,
     ParentType,
     ContextType
   >;

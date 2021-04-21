@@ -35,6 +35,7 @@ export type SpeciesMainData = {
   homeworld?: number;
   language: string;
   name: string;
+  people: number[];
   skin_colors: string | string[];
 };
 
