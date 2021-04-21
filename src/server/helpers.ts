@@ -94,11 +94,11 @@ export const transformPerson = ({
     hair_color,
     height,
     mass,
+    name,
     skin_Color,
-    ...rest
   },
   id,
-}: Response<PersonMainData>): Omit<Person, 'homeworld'> => ({
+}: Response<PersonMainData>): Person => ({
   birthYear: birth_year,
   created: new Date(created),
   edited: new Date(edited),
@@ -108,7 +108,7 @@ export const transformPerson = ({
   height: transformToNumberOrNull(height),
   mass: transformToNumberOrNull(mass),
   skinColor: transformToArrayOrNull(skin_Color),
-  ...rest,
+  name,
   id,
 });
 
