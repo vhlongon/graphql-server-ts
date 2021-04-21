@@ -15,11 +15,25 @@ export type PersonMainData = {
   edited: string;
   eye_color: string;
   gender: string;
-  hair_color: string[];
+  hair_color: string | string[];
   height: number;
   mass: number;
   name: string;
-  skin_Color: string[];
+  skin_Color: string | string[];
+};
+
+export type SpeciesMainData = {
+  average_height: string;
+  average_lifespan: string;
+  classification: string;
+  created: string;
+  designation: string;
+  edited: string;
+  eye_colors: string | string[];
+  hair_colors: string | string[];
+  language: string;
+  name: string;
+  skin_colors: string | string[];
 };
 
 export type PlanetMainData = {

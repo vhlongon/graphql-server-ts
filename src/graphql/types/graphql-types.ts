@@ -81,6 +81,7 @@ export type Query = {
   people?: Maybe<Array<Person>>;
   planets?: Maybe<Array<Planet>>;
   planet?: Maybe<Planet>;
+  species?: Maybe<Array<Maybe<Species>>>;
 };
 
 export type QueryFilmsArgs = {
@@ -107,6 +108,10 @@ export type QueryPlanetArgs = {
   id: Scalars['Int'];
 };
 
+export type QuerySpeciesArgs = {
+  input?: Maybe<SpeciesInput>;
+};
+
 export enum SortByNameOrId {
   id = 'id',
   name = 'name',
@@ -116,6 +121,26 @@ export enum SortFilmsBy {
   releaseDate = 'releaseDate',
   episodeId = 'episodeId',
 }
+
+export type Species = {
+  classification?: Maybe<Scalars['String']>;
+  created?: Maybe<Scalars['Date']>;
+  designation: Scalars['String'];
+  edited?: Maybe<Scalars['Date']>;
+  eyeColors?: Maybe<Array<Maybe<Scalars['String']>>>;
+  hairColors?: Maybe<Array<Maybe<Scalars['String']>>>;
+  id: Scalars['Int'];
+  name: Scalars['String'];
+  skinColors?: Maybe<Array<Maybe<Scalars['String']>>>;
+  language?: Maybe<Scalars['String']>;
+  averageLifespan?: Maybe<Scalars['Int']>;
+  averageHeight?: Maybe<Scalars['Int']>;
+};
+
+export type SpeciesInput = {
+  sortBy?: Maybe<SortByNameOrId>;
+  id?: Maybe<Scalars['Int']>;
+};
 
 export type ResolverTypeWrapper<T> = Promise<T> | T;
 
@@ -244,6 +269,8 @@ export type ResolversTypes = {
   Query: ResolverTypeWrapper<{}>;
   SortByNameOrId: SortByNameOrId;
   SortFilmsBy: SortFilmsBy;
+  Species: ResolverTypeWrapper<Species>;
+  SpeciesInput: SpeciesInput;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
 };
 
@@ -257,6 +284,8 @@ export type ResolversParentTypes = {
   Float: Scalars['Float'];
   Planet: Planet;
   Query: {};
+  Species: Species;
+  SpeciesInput: SpeciesInput;
   Boolean: Scalars['Boolean'];
 };
 
@@ -394,6 +423,55 @@ export type QueryResolvers<
     ContextType,
     RequireFields<QueryPlanetArgs, 'id'>
   >;
+  species?: Resolver<
+    Maybe<Array<Maybe<ResolversTypes['Species']>>>,
+    ParentType,
+    ContextType,
+    RequireFields<QuerySpeciesArgs, never>
+  >;
+};
+
+export type SpeciesResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Species'] = ResolversParentTypes['Species']
+> = {
+  classification?: Resolver<
+    Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
+  created?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
+  designation?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  edited?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
+  eyeColors?: Resolver<
+    Maybe<Array<Maybe<ResolversTypes['String']>>>,
+    ParentType,
+    ContextType
+  >;
+  hairColors?: Resolver<
+    Maybe<Array<Maybe<ResolversTypes['String']>>>,
+    ParentType,
+    ContextType
+  >;
+  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  skinColors?: Resolver<
+    Maybe<Array<Maybe<ResolversTypes['String']>>>,
+    ParentType,
+    ContextType
+  >;
+  language?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  averageLifespan?: Resolver<
+    Maybe<ResolversTypes['Int']>,
+    ParentType,
+    ContextType
+  >;
+  averageHeight?: Resolver<
+    Maybe<ResolversTypes['Int']>,
+    ParentType,
+    ContextType
+  >;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type Resolvers<ContextType = any> = {
@@ -402,6 +480,7 @@ export type Resolvers<ContextType = any> = {
   Person?: PersonResolvers<ContextType>;
   Planet?: PlanetResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
+  Species?: SpeciesResolvers<ContextType>;
 };
 
 /**

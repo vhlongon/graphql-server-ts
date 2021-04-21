@@ -15,7 +15,17 @@ enum Gender {
   female
 }
 
+input SpeciesInput {
+  sortBy: SortByNameOrId = id
+  id: Int
+}
+
 type Film {
+  # starships: [Int]
+  # vehicles: [Int]
+  # planets: [Int]
+  # characters: [Int]
+  # species: [Int]
   created: Date
   director: String!
   edited: Date
@@ -28,7 +38,7 @@ type Film {
 }
 
 type Person {
-  # homeworld: 1
+  # homeworld: Int
   birthYear: String
   created: Date
   edited: Date
@@ -40,6 +50,23 @@ type Person {
   mass: Float
   name: String!
   skinColor: [String]
+}
+
+type Species {
+  # homeworld: Int
+  # people: [Int]
+  classification: String
+  created: Date
+  designation: String!
+  edited: Date
+  eyeColors: [String]
+  hairColors: [String]
+  id: Int!
+  name: String!
+  skinColors: [String]
+  language: String
+  averageLifespan: Int
+  averageHeight: Int
 }
 
 type Planet {
@@ -64,4 +91,5 @@ type Query {
   people(sortBy: SortByNameOrId = id): [Person!]
   planets(sortBy: SortByNameOrId = id): [Planet!]
   planet(id: Int!): Planet
+  species(input: SpeciesInput): [Species]
 }

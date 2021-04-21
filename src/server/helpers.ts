@@ -1,9 +1,16 @@
-import { Film, Gender, Person, Planet } from '../graphql/types/graphql-types';
+import {
+  Film,
+  Gender,
+  Person,
+  Planet,
+  Species,
+} from '../graphql/types/graphql-types';
 import {
   FilmMainData,
   PersonMainData,
   Response,
   PlanetMainData,
+  SpeciesMainData,
 } from './types';
 
 export const sortByReleaseDate = (
@@ -55,13 +62,9 @@ const transformToArrayOrNull = (input: unknown): [] | string[] | null => {
     return input;
   }
 
-  if (
-    typeof input === 'string' &&
-    input !== 'unknown' &&
-    input !== 'n/a' &&
-    input !== 'none'
-  ) {
-    return [input];
+  if (typeof input === 'string') {
+    const unknownValues = ['unknown', 'n/a', 'none'].includes(input);
+    return unknownValues ? null : input.split(',').map((s) => s.trim());
   }
 
   return null;
@@ -105,6 +108,30 @@ export const transformPerson = ({
   height: transformToNumberOrNull(height),
   mass: transformToNumberOrNull(mass),
   skinColor: transformToArrayOrNull(skin_Color),
+  ...rest,
+  id,
+});
+
+export const transformSpecies = ({
+  fields: {
+    average_height,
+    average_lifespan,
+    created,
+    edited,
+    eye_colors,
+    hair_colors,
+    skin_colors,
+    ...rest
+  },
+  id,
+}: Response<SpeciesMainData>): Species => ({
+  averageHeight: transformToNumberOrNull(average_height),
+  averageLifespan: transformToNumberOrNull(average_lifespan),
+  created: new Date(created),
+  edited: new Date(edited),
+  hairColors: transformToArrayOrNull(hair_colors),
+  eyeColors: transformToArrayOrNull(eye_colors),
+  skinColors: transformToArrayOrNull(skin_colors),
   ...rest,
   id,
 });

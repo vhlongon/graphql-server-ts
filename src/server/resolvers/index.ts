@@ -6,6 +6,7 @@ import { filmResolver } from './film';
 import { peopleResolver } from './people';
 import { personResolver } from './person';
 import { planetResolver } from './planet';
+import { speciesResolver } from './species';
 
 export const resolvers: Resolvers = {
   Date: DateTimeResolver,
@@ -16,5 +17,6 @@ export const resolvers: Resolvers = {
     person: personResolver,
     planets: planetsResolver,
     planet: planetResolver,
+    species: speciesResolver,
   },
 };
