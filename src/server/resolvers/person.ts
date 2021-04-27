@@ -1,22 +1,24 @@
-import { PlanetMainData } from './../types';
-import { transformPerson, transformPlanet } from './../helpers';
+import { PlanetMainData, Context, Root } from './../types';
+import {
+  transformPerson,
+  transformPlanet,
+  hasOwnDeepProperty,
+} from './../helpers';
 import fetch from 'node-fetch';
 import { REST_API } from './../constants';
-import {
-  QueryFilmArgs,
-  QueryResolvers,
-} from '../../graphql/types/graphql-types';
+import { Person, QueryPersonArgs } from '../../graphql/types/graphql-types';
 import { PersonMainData, Response } from '../types';
 import graphqlFields from 'graphql-fields';
+import { GraphQLResolveInfo } from 'graphql';
 
-export const personResolver: QueryResolvers['person'] = async (
-  _,
-  args: QueryFilmArgs,
-  context,
-  info,
-) => {
+export const personResolver = async (
+  root: Root,
+  args: QueryPersonArgs,
+  context: Context,
+  info: GraphQLResolveInfo,
+): Promise<Person> => {
   const fieldsInfo = graphqlFields(info);
-  const hasPlanetInQuery = Object.keys(fieldsInfo).includes('homeworld');
+  const hasPlanetInQuery = hasOwnDeepProperty(fieldsInfo, 'homeworld');
   const response = await fetch(`${REST_API}/people/${args.id}`);
   const data: Response<PersonMainData> = await response.json();
 

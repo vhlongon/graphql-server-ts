@@ -1,5 +1,5 @@
 import fetch from 'node-fetch';
-import { fetchPerson, transformStarship } from './../helpers';
+import { transformStarship } from './../helpers';
 import { REST_API } from './../constants';
 import {
   QueryFilmArgs,
@@ -7,9 +7,10 @@ import {
 } from '../../graphql/types/graphql-types';
 import { StarshipMainData, Response } from '../types';
 import graphqlFields from 'graphql-fields';
+import { personResolver } from './person';
 
 export const starshipResolver: QueryResolvers['starship'] = async (
-  _,
+  root,
   args: QueryFilmArgs,
   context,
   info,
@@ -28,7 +29,7 @@ export const starshipResolver: QueryResolvers['starship'] = async (
   if (hasPilotsInQuery && data.fields.pilots.length) {
     const pilots = await Promise.all(
       data.fields.pilots.map(async (personId: number) => {
-        return await fetchPerson(personId);
+        return await personResolver(root, { id: personId }, context, info);
       }),
     );
 

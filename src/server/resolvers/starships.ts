@@ -1,11 +1,6 @@
 import fetch from 'node-fetch';
 import { StarshipMainData, Response } from '../types';
-import {
-  sortById,
-  sortByClass,
-  transformStarship,
-  fetchPerson,
-} from './../helpers';
+import { sortById, sortByClass, transformStarship } from './../helpers';
 import graphqlFields from 'graphql-fields';
 import {
   QueryResolvers,
@@ -13,6 +8,7 @@ import {
   SortStarshipBy,
 } from '../../graphql/types/graphql-types';
 import { REST_API } from '../constants';
+import { personResolver } from './person';
 
 export const starshipsResolver: QueryResolvers['starships'] = async (
   _,
@@ -34,7 +30,7 @@ export const starshipsResolver: QueryResolvers['starships'] = async (
       sorted.map(async (starship) => {
         const pilots = await Promise.all(
           starship.fields.pilots.map(async (personId: number) => {
-            return await fetchPerson(personId);
+            return await personResolver(_, { id: personId }, context, info);
           }),
         );
         return {

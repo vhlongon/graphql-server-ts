@@ -64,3 +64,8 @@ export type Response<T> = {
   fields: T;
   id: number;
 };
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type Context = any;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type Root = any;

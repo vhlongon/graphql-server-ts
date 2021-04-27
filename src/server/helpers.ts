@@ -17,6 +17,26 @@ import {
   StarshipMainData,
 } from './types';
 
+export const hasOwnDeepProperty = (
+  obj: Record<string, unknown>,
+  prop: string,
+): boolean => {
+  if (typeof obj === 'object' && obj !== null) {
+    if (obj.hasOwnProperty(prop)) {
+      return true;
+    }
+    for (const p in obj) {
+      if (
+        obj.hasOwnProperty(p) &&
+        hasOwnDeepProperty(obj[p] as Record<string, unknown>, prop)
+      ) {
+        return true;
+      }
+    }
+  }
+  return false;
+};
+
 export const sortByReleaseDate = (
   data: Response<FilmMainData>[],
 ): Response<FilmMainData>[] =>
