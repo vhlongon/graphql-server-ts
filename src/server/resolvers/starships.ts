@@ -1,10 +1,8 @@
 import fetch from 'node-fetch';
-import { StarshipMainData, PlanetMainData, Response } from '../types';
+import { StarshipMainData, Response } from '../types';
 import {
   sortById,
   sortByClass,
-  transformPerson,
-  transformPlanet,
   transformStarship,
   fetchPerson,
 } from './../helpers';
