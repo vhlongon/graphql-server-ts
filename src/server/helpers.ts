@@ -1,16 +1,20 @@
+import fetch from 'node-fetch';
 import {
   Film,
   Gender,
   Person,
   Planet,
   Species,
+  Starship,
 } from '../graphql/types/graphql-types';
+import { REST_API } from './constants';
 import {
   FilmMainData,
   PersonMainData,
   Response,
   PlanetMainData,
   SpeciesMainData,
+  StarshipMainData,
 } from './types';
 
 export const sortByReleaseDate = (
@@ -26,6 +30,18 @@ export const sortByEpisode = (
   data: Response<FilmMainData>[],
 ): Response<FilmMainData>[] =>
   data.sort((a, b) => a.fields.episode_id - b.fields.episode_id);
+
+interface WithClass {
+  starship_class: string;
+}
+export const sortByClass = <T extends WithClass>(
+  data: Response<T>[],
+): Response<T>[] =>
+  data.sort((a, b) =>
+    a.fields.starship_class
+      .toLowerCase()
+      .localeCompare(b.fields.starship_class.toLowerCase()),
+  );
 
 interface WithName {
   name: string;
@@ -176,3 +192,31 @@ export const transformPlanet = ({
   terrain: transformToArrayOrNull(terrain),
   id,
 });
+
+export const transformStarship = ({
+  fields: { MGLT, starship_class, hyperdrive_rating },
+  id,
+}: Response<StarshipMainData>): Starship => ({
+  MGLT: transformToNumberOrNull(MGLT),
+  class: starship_class,
+  hyperdriveRating: transformToNumberOrNull(hyperdrive_rating),
+  id,
+});
+
+export const fetchPerson = async (id?: number): Promise<Person | null> => {
+  if (!id) {
+    return null;
+  }
+  const response = await fetch(`${REST_API}/people/${id}`);
+  const personData: Response<PersonMainData> = await response.json();
+  return transformPerson(personData);
+};
+
+export const fetchPlanet = async (id?: number): Promise<Planet | null> => {
+  if (!id) {
+    return null;
+  }
+  const response = await fetch(`${REST_API}/planets/${id}`);
+  const planetData: Response<PlanetMainData> = await response.json();
+  return transformPlanet(planetData);
+};

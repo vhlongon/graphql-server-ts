@@ -1,44 +1,19 @@
-import {
-  PersonMainData,
-  PlanetMainData,
-  Response,
-  SpeciesMainData,
-} from './../types';
+import { Response, SpeciesMainData } from './../types';
 import fetch from 'node-fetch';
 import {
+  fetchPerson,
+  fetchPlanet,
   sortById,
   sortByName,
-  transformPerson,
-  transformPlanet,
   transformSpecies,
 } from './../helpers';
 import {
-  Person,
-  Planet,
   QueryResolvers,
   QuerySpeciesArgs,
   SortByNameOrId,
 } from '../../graphql/types/graphql-types';
 import { REST_API } from '../constants';
 import graphqlFields from 'graphql-fields';
-
-const fetchPlanet = async (id?: number): Promise<Planet | null> => {
-  if (!id) {
-    return null;
-  }
-  const response = await fetch(`${REST_API}/planets/${id}`);
-  const planetData: Response<PlanetMainData> = await response.json();
-  return transformPlanet(planetData);
-};
-
-const fetchPerson = async (id?: number): Promise<Person | null> => {
-  if (!id) {
-    return null;
-  }
-  const response = await fetch(`${REST_API}/people/${id}`);
-  const personData: Response<PersonMainData> = await response.json();
-  return transformPerson(personData);
-};
 
 export const speciesResolver: QueryResolvers['species'] = async (
   _,
@@ -58,7 +33,7 @@ export const speciesResolver: QueryResolvers['species'] = async (
       throw new Error(`Species with id: ${input.id} not found`);
     }
 
-    // initially only add the transformed data for person
+    // initially only add the transformed data for species
     let singleSpecies = transformSpecies(data);
 
     // when the planet is request add to the response

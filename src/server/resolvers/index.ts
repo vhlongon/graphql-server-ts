@@ -1,3 +1,5 @@
+import { starshipResolver } from './starship';
+import { starshipsResolver } from './starships';
 import { planetsResolver } from './planets';
 import { Resolvers } from '../../graphql/types/graphql-types';
 import { filmsResolver } from './films';
@@ -18,5 +20,7 @@ export const resolvers: Resolvers = {
     planets: planetsResolver,
     planet: planetResolver,
     species: speciesResolver,
+    starship: starshipResolver,
+    starships: starshipsResolver,
   },
 };

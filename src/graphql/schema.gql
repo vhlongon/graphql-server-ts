@@ -5,6 +5,11 @@ enum SortFilmsBy {
   episodeId
 }
 
+enum SortStarshipBy {
+  id
+  class
+}
+
 enum SortByNameOrId {
   id
   name
@@ -84,6 +89,13 @@ type Species {
   averageHeight: Int
 }
 
+type Starship {
+  id: Int!
+  pilots: [Person]
+  MGLT: Int
+  class: String!
+  hyperdriveRating: Float
+}
 
 type Query {
   films(sortBy: SortFilmsBy = episodeId): [Film!]
@@ -93,4 +105,6 @@ type Query {
   planets(sortBy: SortByNameOrId = id): [Planet!]
   planet(id: Int!): Planet
   species(input: SpeciesInput): [Species]
+  starship(id: Int!): Starship 
+  starships(sortBy: SortStarshipBy = id): [Starship!]
 }

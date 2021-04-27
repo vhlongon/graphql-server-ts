@@ -83,6 +83,8 @@ export type Query = {
   planets?: Maybe<Array<Planet>>;
   planet?: Maybe<Planet>;
   species?: Maybe<Array<Maybe<Species>>>;
+  starship?: Maybe<Starship>;
+  starships?: Maybe<Array<Starship>>;
 };
 
 export type QueryFilmsArgs = {
@@ -113,6 +115,14 @@ export type QuerySpeciesArgs = {
   input?: Maybe<SpeciesInput>;
 };
 
+export type QueryStarshipArgs = {
+  id: Scalars['Int'];
+};
+
+export type QueryStarshipsArgs = {
+  sortBy?: Maybe<SortStarshipBy>;
+};
+
 export enum SortByNameOrId {
   id = 'id',
   name = 'name',
@@ -121,6 +131,11 @@ export enum SortByNameOrId {
 export enum SortFilmsBy {
   releaseDate = 'releaseDate',
   episodeId = 'episodeId',
+}
+
+export enum SortStarshipBy {
+  id = 'id',
+  class = 'class',
 }
 
 export type Species = {
@@ -143,6 +158,14 @@ export type Species = {
 export type SpeciesInput = {
   sortBy?: Maybe<SortByNameOrId>;
   id?: Maybe<Scalars['Int']>;
+};
+
+export type Starship = {
+  id: Scalars['Int'];
+  pilots?: Maybe<Array<Maybe<Person>>>;
+  MGLT?: Maybe<Scalars['Int']>;
+  class: Scalars['String'];
+  hyperdriveRating?: Maybe<Scalars['Float']>;
 };
 
 export type ResolverTypeWrapper<T> = Promise<T> | T;
@@ -272,8 +295,10 @@ export type ResolversTypes = {
   Query: ResolverTypeWrapper<{}>;
   SortByNameOrId: SortByNameOrId;
   SortFilmsBy: SortFilmsBy;
+  SortStarshipBy: SortStarshipBy;
   Species: ResolverTypeWrapper<Species>;
   SpeciesInput: SpeciesInput;
+  Starship: ResolverTypeWrapper<Starship>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
 };
 
@@ -289,6 +314,7 @@ export type ResolversParentTypes = {
   Query: {};
   Species: Species;
   SpeciesInput: SpeciesInput;
+  Starship: Starship;
   Boolean: Scalars['Boolean'];
 };
 
@@ -437,6 +463,18 @@ export type QueryResolvers<
     ContextType,
     RequireFields<QuerySpeciesArgs, never>
   >;
+  starship?: Resolver<
+    Maybe<ResolversTypes['Starship']>,
+    ParentType,
+    ContextType,
+    RequireFields<QueryStarshipArgs, 'id'>
+  >;
+  starships?: Resolver<
+    Maybe<Array<ResolversTypes['Starship']>>,
+    ParentType,
+    ContextType,
+    RequireFields<QueryStarshipsArgs, 'sortBy'>
+  >;
 };
 
 export type SpeciesResolvers<
@@ -492,6 +530,26 @@ export type SpeciesResolvers<
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type StarshipResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Starship'] = ResolversParentTypes['Starship']
+> = {
+  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  pilots?: Resolver<
+    Maybe<Array<Maybe<ResolversTypes['Person']>>>,
+    ParentType,
+    ContextType
+  >;
+  MGLT?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  class?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  hyperdriveRating?: Resolver<
+    Maybe<ResolversTypes['Float']>,
+    ParentType,
+    ContextType
+  >;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type Resolvers<ContextType = any> = {
   Date?: GraphQLScalarType;
   Film?: FilmResolvers<ContextType>;
@@ -499,6 +557,7 @@ export type Resolvers<ContextType = any> = {
   Planet?: PlanetResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Species?: SpeciesResolvers<ContextType>;
+  Starship?: StarshipResolvers<ContextType>;
 };
 
 /**

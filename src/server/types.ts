@@ -53,6 +53,13 @@ export type PlanetMainData = {
   terrain: string[];
 };
 
+export type StarshipMainData = {
+  pilots: number[] | [];
+  MGLT: string;
+  starship_class: string;
+  hyperdrive_rating: string;
+};
+
 export type Response<T> = {
   fields: T;
   id: number;
